@@ -1,0 +1,4 @@
+name: ServerDebug
+version: '${project.version}'
+main: com.jeff_media.serverdebug.ServerDebug
+api-version: 1.20
