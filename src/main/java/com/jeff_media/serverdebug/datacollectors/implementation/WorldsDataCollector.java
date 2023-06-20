@@ -1,6 +1,6 @@
-package com.jeff_media.serverdebug.datacollectors;
+package com.jeff_media.serverdebug.datacollectors.implementation;
 
-import com.jeff_media.serverdebug.YamlDataCollector;
+import com.jeff_media.serverdebug.datacollectors.YamlDataCollector;
 import java.io.File;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -38,6 +38,8 @@ public class WorldsDataCollector extends YamlDataCollector {
             set(name + ".spawnLocation", world.getSpawnLocation());
             set(name + ".worldBorder", world.getWorldBorder());
             set(name + ".seaLevel", world.getSeaLevel());
+            set(name + ".minHeight", world.getMinHeight());
+            set(name + ".maxHeight", world.getMaxHeight());
         }
     }
 }

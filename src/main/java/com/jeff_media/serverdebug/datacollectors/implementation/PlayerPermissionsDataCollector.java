@@ -1,6 +1,6 @@
-package com.jeff_media.serverdebug.datacollectors;
+package com.jeff_media.serverdebug.datacollectors.implementation;
 
-import com.jeff_media.serverdebug.YamlDataCollector;
+import com.jeff_media.serverdebug.datacollectors.YamlDataCollector;
 import java.io.File;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
@@ -14,27 +14,27 @@ import org.bukkit.permissions.PermissionAttachmentInfo;
 
 public class PlayerPermissionsDataCollector extends YamlDataCollector {
     public PlayerPermissionsDataCollector(File directory) {
-        super(directory, "playerPermisions");
+        super(directory, "playerPermissions");
+        options().pathSeparator(';');
     }
 
     @Override
     public void collectData() {
         for(Player player : Bukkit.getOnlinePlayers()) {
+            //System.out.println("Collecting permissions for " + player.getName());
             String name = player.getName();
-            set(name + ".uuid", player.getUniqueId().toString());
-            set(name + ".isOp", player.isOp());
-            List<PermissionAttachmentInfo> perms = player.getEffectivePermissions().stream().sorted(Comparator.comparing(PermissionAttachmentInfo::getPermission)).collect(Collectors.toList());
-            List<Map<String,Object>> permsMap = perms.stream().map(info -> {
-                Map<String,Object> map = new LinkedHashMap<>();
-                map.put("name", info.getPermission());
-                map.put("value", info.getValue());
+            set(name + ";uuid", player.getUniqueId().toString());
+            set(name + ";isOp", player.isOp());
+            player.getEffectivePermissions().stream().sorted(Comparator.comparing(PermissionAttachmentInfo::getPermission)).forEachOrdered(info -> {
+                //System.out.println("Found permission " + info.getPermission() + " with value " + info.getValue());
+                Map<String,String> map = new LinkedHashMap<>();
+                map.put("value", String.valueOf(info.getValue()));
                 Permission perm = Bukkit.getPluginManager().getPermission(info.getPermission());
                 if(perm != null) {
                     map.put("default", perm.getDefault().toString());
                 }
-                return map;
-            }).collect(Collectors.toList());
-            set(name + ".permissions", permsMap);
+                set(name + ";permissions;" + info.getPermission(), map);
+            });
         }
     }
 }

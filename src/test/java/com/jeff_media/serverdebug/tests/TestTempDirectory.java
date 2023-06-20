@@ -1,16 +1,12 @@
 package com.jeff_media.serverdebug.tests;
 
-import com.jeff_media.serverdebug.InputStreamProvider;
 import com.jeff_media.serverdebug.Utils;
-import com.jeff_media.serverdebug.ZipCreator;
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
-public class TestZipFile {
+public class TestTempDirectory {
 
     @Test
     public void testDeleteDirectory() throws IOException {
@@ -38,5 +34,7 @@ public class TestZipFile {
         File[] contents = tempDirectory.listFiles();
         Assertions.assertNotNull(contents);
         Assertions.assertEquals(0, contents.length);
+        Assertions.assertTrue(Utils.deleteFolderRecursively(tempDirectory), "Could not delete temp directory");
     }
+
 }
